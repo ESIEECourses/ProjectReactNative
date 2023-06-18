@@ -11,9 +11,9 @@ const AppBottomNavigator = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Meal Planning" component={MealPlanning} />
-        <Tab.Screen name="Food" component={FoodDatabase} />
         <Tab.Screen name="Health Goals" component={HealthGoals} />
+        <Tab.Screen name="Food" component={FoodDatabase} />
+        <Tab.Screen name="Meal Planning" component={MealPlanning} />
       </Tab.Navigator>
     </NavigationContainer>
   );

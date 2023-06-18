@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, Button, Alert, StyleSheet } from "react-native";
+import { View, TextInput, Text, Button, Alert, StyleSheet, ScrollView } from "react-native";
 import Checkbox from "expo-checkbox";
 import GenderPicker from "../components/GenderPicker";
+import ActivityLevelPicker from "../components/ActivityLevelPicker";
+import HealthGoalPicker from "../components/HealthGoalPicker";
 
 export default function App() {
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("male");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const [activityLevel, setActivityLevel] = useState("");
-  const [healthGoal, setHealthGoal] = useState("");
+  const [activityLevel, setActivityLevel] = useState("sedentary");
+  const [healthGoal, setHealthGoal] = useState("lose weight");
   const [isAgreed, setIsAgreed] = useState(false);
+  const [showGenderPicker, setShowGenderPicker] = useState(false);
+  const [showActivityLevelPicker, setShowActivityLevelPicker] = useState(false);
+  const [showHealthGoalPicker, setShowHealthGoalPicker] = useState(false);
 
   const handleAgeChange = (age) => {
     setAge(age.toString());
@@ -51,13 +56,51 @@ export default function App() {
     }
 
     // If all validations pass, display the form information
-    const message = `Age: ${age}\nGender: ${gender}\nHeight: ${height}\nWeight: ${weight}\nActivityLevel: ${activityLevel}\nHealthGoal: ${healthGoal}`;
+    console.log("BMR : " + calculateBMR());
+    // const message = `BMR: ${calculateBMR()}`;
+    Alert.alert(`BMR = ${Math.round(calculateBMR())} cal`);
+  };
 
-    Alert.alert("Form Submitted", message);
+  const calculateBMR = () => {
+    let BMR;
+    if(gender==='male'){
+      BMR = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    }
+    else {
+      BMR = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+    switch (activityLevel){
+      case 'sedentary':
+        BMR *= 1.2;
+        break;
+      case 'lighlty active':
+        BMR *= 1.375;
+        break;
+      case 'moderatly':
+        BMR *= 1.55;
+        break;
+      case 'very active':
+        BMR *= 1.725;
+        break;
+      case 'super active':
+        BMR *= 1.9;
+        break;
+    }
+    switch (healthGoal){
+      case 'gain weight':
+        BMR += BMR*0.1;
+        break;
+      case 'lose weight':
+        BMR -= BMR*0.1;
+        break;
+      default:
+        break;
+    }
+    return BMR;
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Age"
@@ -66,7 +109,13 @@ export default function App() {
         keyboardType="numeric"
         maxLength={2}
       />
-      <GenderPicker handleGenderChange={handleGenderChange} gender={gender} />
+      <Button  title="Gender" onPress={() => setShowGenderPicker(!showGenderPicker)} />
+      {showGenderPicker && (
+        <GenderPicker
+          handleGenderChange={handleGenderChange}
+          gender={gender}
+        />
+      )}
       <TextInput
         style={styles.input}
         placeholder="Height"
@@ -83,18 +132,20 @@ export default function App() {
         keyboardType="numeric"
         maxLength={3}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Activity level"
-        onChangeText={handleActivityLevelChange}
-        value={activityLevel}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Health Goal"
-        onChangeText={handleHealthGoalChange}
-        value={healthGoal}
-      />
+      <Button  title="Activity level" onPress={() => setShowActivityLevelPicker(!showActivityLevelPicker)} />
+      {showActivityLevelPicker && (
+        <ActivityLevelPicker
+          handleActivityLevelChange={handleActivityLevelChange}
+          activityLevel={activityLevel}
+        />
+      )}
+      <Button  title="Health goal" onPress={() => setShowHealthGoalPicker(!showHealthGoalPicker)} />
+      {showHealthGoalPicker && (
+        <HealthGoalPicker
+          handleHealthGoalChange={handleHealthGoalChange}
+          healthGoal={healthGoal}
+        />
+      )}
       <View style={styles.switchContainer}>
         <Checkbox value={isAgreed} onValueChange={handleAgreedCheckboxChange} />
         <Text style={styles.switchText}>
@@ -102,7 +153,7 @@ export default function App() {
         </Text>
       </View>
       <Button title="Submit" onPress={handleSubmit} disabled={!age || !gender || !height} />
-    </View>
+      </ScrollView>
   );
 }
 
@@ -129,5 +180,8 @@ const styles = StyleSheet.create({
   },
   switchText: {
     marginLeft: 10,
+  },
+  pickerItem: {
+    textAlign: "center",
   },
 });
