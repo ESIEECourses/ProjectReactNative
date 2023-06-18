@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, Button, Alert, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
+import GenderPicker from "../components/GenderPicker";
 
 export default function App() {
   const [age, setAge] = useState("");
@@ -65,12 +66,7 @@ export default function App() {
         keyboardType="numeric"
         maxLength={2}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Gender"
-        onChangeText={handleGenderChange}
-        value={gender}
-      />
+      <GenderPicker handleGenderChange={handleGenderChange} gender={gender} />
       <TextInput
         style={styles.input}
         placeholder="Height"
