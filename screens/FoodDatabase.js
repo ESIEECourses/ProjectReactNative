@@ -2,16 +2,62 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
 import FoodDatabaseService from '../services/FoodDatabaseService';
 import MealPicker from '../components/MealPicker';
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DayPicker from '../components/DayPicker';
 
 export default function FoodDatabase() {
   const [foodName, setFoodName] = useState("");
   const [foodList, setFoodList] = useState([]);
   const [selectedFood, setSelectedFood] = useState("");
   const [details, setDetails] = useState(null);
-  const [meal, setMeal] = useState("breakfast");
+  const [meal, setMeal] = useState("Breakfast");
+  const [mealDay, setMealDay] = useState("Monday");
   const [quantity, setQuantity] = useState("");
-  const [mealDate, setMealDate] = useState(new Date());
+  const [showMealDayPicker, setShowMealDayPicker] = useState(false);
+  const [showMealPicker, setShowMealPicker] = useState(false);
+  const [mealPlan, setMealPlan] = useState({
+    "Monday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Tuesday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Wednesday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Thursday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Friday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Saturday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Sunday": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    }
+  });
 
   const handleFoodNameChange = (foodName) => {
     setFoodName(foodName);
@@ -21,6 +67,7 @@ export default function FoodDatabase() {
     const foodList = await FoodDatabaseService.searchFood(foodName);
     setFoodList(foodList);
     setDetails(null);
+    console.log(mealPlan);
   };
 
   const handleSelectedFood = async (selectedFood) => {
@@ -38,13 +85,18 @@ export default function FoodDatabase() {
     setQuantity(quantity.toString());
   };
 
-  const handleMealDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || dateOfBirth;
-    setMealDate(currentDate);
+  const handleMealDayChange = (mealDay) => {
+    setMealDay(mealDay);
   };
+  
   const updateMealPlan = () => {
-    
+    setMealPlan((prevMealPlan) => {
+      const updatedMealPlan = { ...prevMealPlan };
+      updatedMealPlan[mealDay][meal].push(selectedFood);
+      return updatedMealPlan;
+    });
   };
+  
   
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -77,17 +129,21 @@ export default function FoodDatabase() {
                 keyboardType="numeric"
                 maxLength={2}
               />
-              <DateTimePicker
-                value={mealDate}
-                mode="date"
-                onChange={handleMealDateChange}
-                minimumDate={new Date()}
-              />
-              <MealPicker
-                handleMealChange={handleMealChange}
-                meal={meal}
-              />
-              <Button title="Update Meal Plan" onPress={updateMealPlan} disabled={!mealDate || !quantity || !meal} />
+              <Button  title="Select a day" onPress={() => setShowMealDayPicker(!showMealDayPicker)} />
+              {showMealDayPicker && (
+                <DayPicker 
+                  handleMealDayChange={handleMealDayChange}
+                  mealDay={mealDay}
+                />
+              )}
+              <Button  title="Select a meal" onPress={() => setShowMealPicker(!showMealPicker)} />
+              {showMealPicker && (
+                <MealPicker
+                  handleMealChange={handleMealChange}
+                  meal={meal}
+                />
+              )}
+              <Button title="Update Meal Plan" onPress={() => updateMealPlan(mealPlan)} disabled={!mealDay || !quantity || !meal} />
             </View>
           )}
         </View>

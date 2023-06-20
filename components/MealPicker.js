@@ -2,14 +2,14 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const MealPicker = ({ handleMealChange, gender }) => {
+const MealPicker = ({ handleMealChange, meal }) => {
   return (
     <View style={styles.container}>
-      <Picker selectedValue={gender} onValueChange={(itemValue) => handleMealChange(itemValue)} itemStyle={styles.pickerItem}>
-        <Picker.Item label="Breakfast" value="breakfast" />
-        <Picker.Item label="Lunch" value="lunch" />
-        <Picker.Item label="Dinner" value="dinner" />
-        <Picker.Item label="Snack" value="snack" />
+      <Picker selectedValue={meal} onValueChange={(itemValue) => handleMealChange(itemValue)} itemStyle={styles.pickerItem}>
+        <Picker.Item label="Breakfast" value="Breakfast" />
+        <Picker.Item label="Lunch" value="Lunch" />
+        <Picker.Item label="Dinner" value="Dinner" />
+        <Picker.Item label="Snack" value="Snack" />
       </Picker>
     </View>
   );
