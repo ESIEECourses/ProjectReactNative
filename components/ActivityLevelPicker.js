@@ -5,11 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 const ActivityLevelPicker = ({ handleActivityLevelChange, activityLevel }) => {
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={activityLevel}
-        onValueChange={(itemValue) => handleActivityLevelChange(itemValue)}
-        itemStyle={styles.pickerItem}
-      >
+      <Picker selectedValue={activityLevel} onValueChange={(itemValue) => handleActivityLevelChange(itemValue)} itemStyle={styles.pickerItem}>
         <Picker.Item label="Sedentary" value="sedentary" />
         <Picker.Item label="Lightly active" value="lightly active" />
         <Picker.Item label="Moderately active" value="moderately active" />
@@ -23,7 +19,7 @@ const ActivityLevelPicker = ({ handleActivityLevelChange, activityLevel }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   pickerItem: {
     textAlign: "center",

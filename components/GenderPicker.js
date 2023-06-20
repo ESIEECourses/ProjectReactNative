@@ -5,11 +5,7 @@ import { Picker } from "@react-native-picker/picker";
 const GenderPicker = ({ handleGenderChange, gender }) => {
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue) => handleGenderChange(itemValue)}
-        itemStyle={styles.pickerItem}
-      >
+      <Picker selectedValue={gender} onValueChange={(itemValue) => handleGenderChange(itemValue)} itemStyle={styles.pickerItem}>
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
       </Picker>
@@ -20,7 +16,7 @@ const GenderPicker = ({ handleGenderChange, gender }) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   pickerItem: {
     textAlign: "center",
