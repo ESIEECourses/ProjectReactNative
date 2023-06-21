@@ -149,7 +149,7 @@ export default function App() {
       <View style={styles.switchContainer}>
         <Checkbox value={isAgreed} onValueChange={handleAgreedCheckboxChange} />
         <Text style={styles.switchText}>
-          I understand the rules of the project and I'll do my best
+          I agree to share those data with the application
         </Text>
       </View>
       <Button title="Submit" onPress={handleSubmit} disabled={!age || !gender || !height} />

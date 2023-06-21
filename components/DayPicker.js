@@ -2,10 +2,10 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-const DayPicker = ({ handleMealDayChange, day }) => {
+const DayPicker = ({ handleMealDayChange, mealDay }) => {
   return (
     <View style={styles.container}>
-      <Picker selectedValue={day} onValueChange={(itemValue) => handleMealDayChange(itemValue)} itemStyle={styles.pickerItem}>
+      <Picker selectedValue={mealDay} onValueChange={(itemValue) => handleMealDayChange(itemValue)} itemStyle={styles.pickerItem}>
         <Picker.Item label="Monday" value="Monday" />
         <Picker.Item label="Tuesday" value="Tuesday" />
         <Picker.Item label="Wednesday" value="Wednesday" />
