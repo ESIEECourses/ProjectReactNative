@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext  } from 'react';
 import { View, TextInput, Button, TouchableOpacity, StyleSheet, Text, ScrollView } from 'react-native';
 import FoodDatabaseService from '../services/FoodDatabaseService';
 import MealPicker from '../components/MealPicker';
 import DayPicker from '../components/DayPicker';
+import { MealPlanContext } from '../contexts/MealPlanContext.js';
 
 export default function FoodDatabase() {
   const [foodName, setFoodName] = useState("");
@@ -14,50 +15,8 @@ export default function FoodDatabase() {
   const [quantity, setQuantity] = useState("");
   const [showMealDayPicker, setShowMealDayPicker] = useState(false);
   const [showMealPicker, setShowMealPicker] = useState(false);
-  const [mealPlan, setMealPlan] = useState({
-    "Monday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Tuesday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Wednesday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Thursday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Friday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Saturday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    },
-    "Sunday": {
-      "Breakfast": [],
-      "Lunch": [],
-      "Snack": [],
-      "Dinner": []
-    }
-  });
+  const { mealPlan, setMealPlan } = useContext(MealPlanContext);
+  
 
   const handleFoodNameChange = (foodName) => {
     setFoodName(foodName);
@@ -93,6 +52,7 @@ export default function FoodDatabase() {
     setMealPlan((prevMealPlan) => {
       const updatedMealPlan = { ...prevMealPlan };
       updatedMealPlan[mealDay][meal].push(selectedFood);
+      updatedMealPlan[mealDay]["totalCalories"] += details.ENERC_KCAL;
       return updatedMealPlan;
     });
   };
@@ -143,7 +103,7 @@ export default function FoodDatabase() {
                   meal={meal}
                 />
               )}
-              <Button title="Update Meal Plan" onPress={() => updateMealPlan(mealPlan)} disabled={!mealDay || !quantity || !meal} />
+              <Button title="Update Meal Plan" onPress={updateMealPlan} disabled={!mealDay || !quantity || !meal} />
             </View>
           )}
         </View>
