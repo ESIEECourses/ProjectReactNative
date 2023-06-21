@@ -51,8 +51,10 @@ export default function FoodDatabase() {
   const updateMealPlan = () => {
     setMealPlan((prevMealPlan) => {
       const updatedMealPlan = { ...prevMealPlan };
-      updatedMealPlan[mealDay][meal].push(selectedFood);
-      updatedMealPlan[mealDay]["totalCalories"] += details.ENERC_KCAL;
+      for(let i = 0; i < quantity; i++){
+        updatedMealPlan[mealDay][meal].push(selectedFood);
+        updatedMealPlan[mealDay]["totalCalories"] += details.ENERC_KCAL;
+      }
       return updatedMealPlan;
     });
   };
@@ -74,7 +76,7 @@ export default function FoodDatabase() {
             <Text>Aucune données</Text>
           ) : (
             <View>
-              <Text>{selectedFood} Details:</Text>
+              <Text style={styles.title}>{selectedFood} Details:</Text>
               <Text>Carbohydrates: {details.CHOCDF}g</Text>
               <Text>Energy: {details.ENERC_KCAL}kcal</Text>
               <Text>Total lipid: {details.FAT}g</Text>
@@ -89,21 +91,25 @@ export default function FoodDatabase() {
                 keyboardType="numeric"
                 maxLength={2}
               />
-              <Button  title="Select a day" onPress={() => setShowMealDayPicker(!showMealDayPicker)} />
+              <TouchableOpacity style={styles.button} onPress={() => setShowMealDayPicker(!showMealDayPicker)}>
+                <Text>Select a day</Text>
+              </TouchableOpacity>
               {showMealDayPicker && (
                 <DayPicker 
                   handleMealDayChange={handleMealDayChange}
                   mealDay={mealDay}
                 />
               )}
-              <Button  title="Select a meal" onPress={() => setShowMealPicker(!showMealPicker)} />
+              <TouchableOpacity style={styles.button} onPress={() => setShowMealPicker(!showMealPicker)}>
+                <Text>Select a meal</Text>
+              </TouchableOpacity>
               {showMealPicker && (
                 <MealPicker
                   handleMealChange={handleMealChange}
                   meal={meal}
                 />
               )}
-              <Button title="Update Meal Plan" onPress={updateMealPlan} disabled={!mealDay || !quantity || !meal} />
+              <Button title="Add to Meal Plan" onPress={updateMealPlan} disabled={!mealDay || !quantity || !meal} />
             </View>
           )}
         </View>
@@ -111,7 +117,6 @@ export default function FoodDatabase() {
         <View>
           {foodList.map((food, index) => (
             <View key={index} >
-              {/* <Button title={food} onPress={} /> */}
               <TouchableOpacity style={styles.button} onPress={() => handleSelectedFood(food)}>
                 <Text>{food}</Text>
               </TouchableOpacity>
@@ -138,6 +143,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     marginBottom: 5
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
   container: {
     flex: 1,

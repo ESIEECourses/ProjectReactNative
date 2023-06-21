@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, Button, Alert, StyleSheet, ScrollView } from "react-native";
+import { View, TextInput, Text, Button, Alert, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Checkbox from "expo-checkbox";
 import GenderPicker from "../components/GenderPicker";
 import ActivityLevelPicker from "../components/ActivityLevelPicker";
@@ -58,7 +58,7 @@ export default function App() {
     // If all validations pass, display the form information
     console.log("BMR : " + calculateBMR());
     // const message = `BMR: ${calculateBMR()}`;
-    Alert.alert(`BMR = ${Math.round(calculateBMR())} cal`);
+    Alert.alert(`BMR = ${Math.round(calculateBMR())} kcal`);
   };
 
   const calculateBMR = () => {
@@ -109,7 +109,9 @@ export default function App() {
         keyboardType="numeric"
         maxLength={2}
       />
-      <Button  title="Gender" onPress={() => setShowGenderPicker(!showGenderPicker)} />
+      <TouchableOpacity style={styles.button} onPress={() => setShowGenderPicker(!showGenderPicker)}>
+        <Text>Select a gender</Text>
+      </TouchableOpacity>
       {showGenderPicker && (
         <GenderPicker
           handleGenderChange={handleGenderChange}
@@ -118,7 +120,7 @@ export default function App() {
       )}
       <TextInput
         style={styles.input}
-        placeholder="Height"
+        placeholder="Height in cm"
         onChangeText={handleHeightChange}
         value={height}
         keyboardType="numeric"
@@ -126,20 +128,24 @@ export default function App() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Weight"
+        placeholder="Weight in kg"
         onChangeText={handleWeightChange}
         value={weight}
         keyboardType="numeric"
         maxLength={3}
       />
-      <Button  title="Activity level" onPress={() => setShowActivityLevelPicker(!showActivityLevelPicker)} />
+      <TouchableOpacity style={styles.button} onPress={() => setShowActivityLevelPicker(!showActivityLevelPicker)}>
+        <Text>Select an Activity level</Text>
+      </TouchableOpacity>
       {showActivityLevelPicker && (
         <ActivityLevelPicker
           handleActivityLevelChange={handleActivityLevelChange}
           activityLevel={activityLevel}
         />
       )}
-      <Button  title="Health goal" onPress={() => setShowHealthGoalPicker(!showHealthGoalPicker)} />
+      <TouchableOpacity style={styles.button} onPress={() => setShowHealthGoalPicker(!showHealthGoalPicker)}>
+        <Text>Select a Health goal</Text>
+      </TouchableOpacity>
       {showHealthGoalPicker && (
         <HealthGoalPicker
           handleHealthGoalChange={handleHealthGoalChange}
@@ -181,7 +187,10 @@ const styles = StyleSheet.create({
   switchText: {
     marginLeft: 10,
   },
-  pickerItem: {
-    textAlign: "center",
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    marginBottom: 5
   },
 });
